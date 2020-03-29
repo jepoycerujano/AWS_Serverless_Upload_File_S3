@@ -1,0 +1,129 @@
+service: aws-serverles-crud
+
+frameworkVersion: ">=1.0.0 <2.0.0"
+
+plugins:
+  - serverless-dynamodb-local # for developers
+  - serverless-offline # for developers
+  - serverless-latest-layer-version # for developers
+  - serverless-pseudo-parameters # for developers
+
+custom:
+  domains:
+    stage: '${self:provider.stage}-${self:service}.nipahut.net'
+  customDomain:
+    domainName: '${self:provider.stage}-${self:service}.nipahut.net'
+    stage: '${self:provider.stage}'
+    basePath: '${self:provider.stage}'
+    certificateName: 'nipahut.net'
+    createRoute53Record: false
+    endpointType: 'edge'
+
+  dynamodb:
+    stages:
+      - dev
+    start:
+      port: 8000
+      migrate: true
+      inMemory: true
+      onStart: true
+
+package:
+  exclude:
+    # - "**/node_modules/**"  # all node_modules folder
+    - "**/*.test.*"  # all test files
+    - ".dynamodb/**"
+    - ".serverless/**"
+  include:
+    - src/module/actor/createActor.js
+    - src/module/actor/createActor.js
+    - src/module/actor/createActor.js
+    - src/module/actor/createActor.js
+    - src/module/actor/createActor.js
+    - src/module/actor/createActor.js
+
+provider:
+  name: aws
+  runtime: nodejs12.x # node package version
+  stage: ${opt:stage, 'dev'} # default invironment set to (dev = "development stage")
+  region: ${opt:region, 'us-east-1'} # region where it will be deploy
+  deploymentBucket:
+    name: deploy.${self:provider.region}.nipahut.net # S3 bucket name
+  environment:
+    DEPLOYMENT_STAGE: ${self:provider.stage}
+    WORKFLOW_ACTOR_TABLE: workflow_actor-${self:provider.stage} # actors table service
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+      Resource:
+        - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.WORKFLOW_ACTOR_TABLE}
+
+resources:
+  Resources:
+    WorkflowActor: # workflow actors table
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.WORKFLOW_ACTOR_TABLE}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+
+functions:
+# CRUD for Workflow Actor 
+# Create, Read, Update and Delete function
+  createActor:
+    description: create actor
+    handler: src/module/actor/createActor.handler
+    events:
+      - http:
+          path: /create
+          method: post
+          cors: true
+
+  getActor:
+    description: get actor
+    handler: src/module/actor/getActor.handler
+    events:
+      - http:
+          path: /get
+          method: post
+          cors: true
+
+  updateActor:
+    description: update actor
+    handler: src/module/actor/updateActor.handler
+    events:
+      - http:
+          path: /update
+          method: post
+          cors: true
+
+  deleteActor:
+    description: delete actor
+    handler: src/module/actor/deleteActor.handler
+    events:
+      - http:
+          path: /delete
+          method: post
+          cors: true
+
+  getMultiActor:
+    description: get one or multiple actors
+    handler: src/module/actor/getMultiActor.handler
+    events:
+      - http:
+          path: /getMultiple
+          method: post
+          cors: true

@@ -1,0 +1,258 @@
+{
+	"info": {
+		"_postman_id": "fd564f10-d7ec-4994-b209-7cfd6ec1b7dd",
+		"name": "myProjects",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create 1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"accounting_inventory\",\r\n    \"desc\": \"all invenotry personnel\",\r\n    \"email\": [\"juan_delacruz@test.com\", \"james_jowel@run.com\"]\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/dev/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dev",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create 2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"its\",\r\n    \"desc\": \"information technology personnel\",\r\n    \"email\": [\"julie_zuas@info.net\", \"andreo_fernandez@logic.com.ph\"]\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/dev/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dev",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get 1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"accounting_inventory\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/dev/get",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dev",
+						"get"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get 2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"its\",\r\n    \"desc\": \"information technology personnel\",\r\n    \"email\": [\"julie_zuas@info.net\", \"andreo_fernandez@logic.com.ph\"]\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/dev/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dev",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update 1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"accounting_inventory\",\r\n    \"desc\": \"all invenotry personnel\",\r\n    \"email\": [\"juan_delacruz@test.com\", \"james_jowel@run.com\"]\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/dev/get",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dev",
+						"get"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update 2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"its\",\r\n    \"desc\": \"information technology personnel\",\r\n    \"email\": [\"julie_zuas@info.net\", \"andreo_fernandez@logic.com.ph\"]\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/dev/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dev",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get multi",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ids\": [\"accounting_inventory\", \"its\"]\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/dev/getMultiple",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dev",
+						"getMultiple"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"accounting_inventory\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/dev/get",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dev",
+						"get"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
