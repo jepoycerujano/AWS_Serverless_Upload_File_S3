@@ -2,7 +2,9 @@
 
 ### What is this repository for? ###
 
-* this is to performed basic CRUD functions
+* this is to performed basic `CRUD` functions using lambda into dynamodb.
+* used a simple middleware `Middy` to mitigate basic http functions.
+* include `Winston` logger to capture logs base on development environment. 
 
 ### How do I get set up? ###
 

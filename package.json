@@ -30,8 +30,10 @@
   "homepage": "https://github.com/jepoycerujano/AWS_Serverless_DynamoDb_CRUD#readme",
   "dependencies": {
     "aws-sdk": "^2.645.0",
+    "middy": "^0.36.0",
     "moment": "^2.24.0",
     "uuid": "^7.0.2",
+    "winston": "^3.2.1",
     "yup": "^0.28.3"
   },
   "devDependencies": {

@@ -4,21 +4,11 @@ frameworkVersion: ">=1.0.0 <2.0.0"
 
 plugins:
   - serverless-dynamodb-local # for developers
-  - serverless-offline # for developers
   - serverless-latest-layer-version # for developers
   - serverless-pseudo-parameters # for developers
+  - serverless-offline # for developers
 
 custom:
-  domains:
-    stage: '${self:provider.stage}-${self:service}.nipahut.net'
-  customDomain:
-    domainName: '${self:provider.stage}-${self:service}.nipahut.net'
-    stage: '${self:provider.stage}'
-    basePath: '${self:provider.stage}'
-    certificateName: 'nipahut.net'
-    createRoute53Record: false
-    endpointType: 'edge'
-
   dynamodb:
     stages:
       - dev
@@ -30,17 +20,16 @@ custom:
 
 package:
   exclude:
-    # - "**/node_modules/**"  # all node_modules folder
+    - "**/node_modules/**"  # all node_modules folder
     - "**/*.test.*"  # all test files
     - ".dynamodb/**"
     - ".serverless/**"
   include:
     - src/module/actor/createActor.js
-    - src/module/actor/createActor.js
-    - src/module/actor/createActor.js
-    - src/module/actor/createActor.js
-    - src/module/actor/createActor.js
-    - src/module/actor/createActor.js
+    - src/module/actor/deleteActor.js
+    - src/module/actor/getActor.js
+    - src/module/actor/getMultiActor.js
+    - src/module/actor/updateActor.js
 
 provider:
   name: aws
@@ -48,7 +37,7 @@ provider:
   stage: ${opt:stage, 'dev'} # default invironment set to (dev = "development stage")
   region: ${opt:region, 'us-east-1'} # region where it will be deploy
   deploymentBucket:
-    name: deploy.${self:provider.region}.nipahut.net # S3 bucket name
+    name: deploy.${self:provider.region}.nipahut.club # S3 bucket name
   environment:
     DEPLOYMENT_STAGE: ${self:provider.stage}
     WORKFLOW_ACTOR_TABLE: workflow_actor-${self:provider.stage} # actors table service
@@ -62,7 +51,7 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
       Resource:
-        - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.WORKFLOW_ACTOR_TABLE}
+        - arn:aws:dynamodb:${self:provider.region}:#{AWS::AccountId}:table/${self:provider.environment.WORKFLOW_ACTOR_TABLE}
 
 resources:
   Resources:
@@ -77,8 +66,8 @@ resources:
           - AttributeName: id
             KeyType: HASH
         ProvisionedThroughput:
-          ReadCapacityUnits: 5
-          WriteCapacityUnits: 5
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
 
 functions:
 # CRUD for Workflow Actor 
@@ -86,6 +75,8 @@ functions:
   createActor:
     description: create actor
     handler: src/module/actor/createActor.handler
+    layers:
+      - arn:aws:lambda:${self:provider.region}:#{AWS::AccountId}:layer:lambda-layer-lib-${self:provider.stage}:latest
     events:
       - http:
           path: /create
@@ -95,6 +86,8 @@ functions:
   getActor:
     description: get actor
     handler: src/module/actor/getActor.handler
+    layers:
+      - arn:aws:lambda:${self:provider.region}:#{AWS::AccountId}:layer:lambda-layer-lib-${self:provider.stage}:latest
     events:
       - http:
           path: /get
@@ -122,6 +115,8 @@ functions:
   getMultiActor:
     description: get one or multiple actors
     handler: src/module/actor/getMultiActor.handler
+    layers:
+      - arn:aws:lambda:${self:provider.region}:#{AWS::AccountId}:layer:lambda-layer-lib-${self:provider.stage}:latest
     events:
       - http:
           path: /getMultiple
