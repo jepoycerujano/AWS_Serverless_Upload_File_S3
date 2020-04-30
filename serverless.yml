@@ -76,7 +76,7 @@ functions:
     description: create actor
     handler: src/module/actor/createActor.handler
     layers:
-      - arn:aws:lambda:${self:provider.region}:#{AWS::AccountId}:layer:lambda-layer-lib-${self:provider.stage}:latest
+      - arn:aws:lambda:${self:provider.region}:#{AWS::AccountId}:layer:aws-serverles-layers-module-${self:provider.stage}:latest
     events:
       - http:
           path: /create
@@ -87,7 +87,7 @@ functions:
     description: get actor
     handler: src/module/actor/getActor.handler
     layers:
-      - arn:aws:lambda:${self:provider.region}:#{AWS::AccountId}:layer:lambda-layer-lib-${self:provider.stage}:latest
+      - arn:aws:lambda:${self:provider.region}:#{AWS::AccountId}:layer:aws-serverles-layers-module-${self:provider.stage}:latest
     events:
       - http:
           path: /get
@@ -97,6 +97,8 @@ functions:
   updateActor:
     description: update actor
     handler: src/module/actor/updateActor.handler
+    layers:
+      - arn:aws:lambda:${self:provider.region}:#{AWS::AccountId}:layer:aws-serverles-layers-module-${self:provider.stage}:latest
     events:
       - http:
           path: /update
@@ -106,6 +108,8 @@ functions:
   deleteActor:
     description: delete actor
     handler: src/module/actor/deleteActor.handler
+    layers:
+      - arn:aws:lambda:${self:provider.region}:#{AWS::AccountId}:layer:aws-serverles-layers-module-${self:provider.stage}:latest
     events:
       - http:
           path: /delete
@@ -116,7 +120,7 @@ functions:
     description: get one or multiple actors
     handler: src/module/actor/getMultiActor.handler
     layers:
-      - arn:aws:lambda:${self:provider.region}:#{AWS::AccountId}:layer:lambda-layer-lib-${self:provider.stage}:latest
+      - arn:aws:lambda:${self:provider.region}:#{AWS::AccountId}:layer:aws-serverles-layers-module-${self:provider.stage}:latest
     events:
       - http:
           path: /getMultiple
