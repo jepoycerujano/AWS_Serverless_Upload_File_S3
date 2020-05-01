@@ -39,8 +39,9 @@ provider:
   deploymentBucket:
     name: deploy.${self:provider.region}.nipahut.club # S3 bucket name
   environment:
-    DEPLOYMENT_STAGE: ${self:provider.stage}
+    DEPLOYMENT_STAGE: ${self:provider.stage} # staging environment dev, test or prod
     WORKFLOW_ACTOR_TABLE: workflow_actor-${self:provider.stage} # actors table service
+    NODE_PATH: './:/opt/node_modules'
 
   iamRoleStatements:
     - Effect: Allow
