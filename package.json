@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jepoycerujano/AWS_Serverless_DynamoDb_CRUD.git"
+    "url": "git+https://github.com/jepoycerujano/AWS_Serverless_Upload_File_S3.git"
   },
   "eslintConfig": {
     "extends": [
@@ -25,9 +25,9 @@
   "author": "jefferson caoile cerujano",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jepoycerujano/AWS_Serverless_DynamoDb_CRUD/issues"
+    "url": "https://github.com/jepoycerujano/AWS_Serverless_Upload_File_S3/issues"
   },
-  "homepage": "https://github.com/jepoycerujano/AWS_Serverless_DynamoDb_CRUD#readme",
+  "homepage": "https://github.com/jepoycerujano/AWS_Serverless_Upload_File_S3#readme",
   "dependencies": {
     "aws-sdk": "^2.645.0",
     "middy": "^0.36.0",
@@ -40,7 +40,6 @@
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.1",
-    "serverless-dynamodb-local": "^0.2.39",
     "serverless-latest-layer-version": "^2.1.0",
     "serverless-offline": "^6.1.0",
     "serverless-pseudo-parameters": "^2.5.0"

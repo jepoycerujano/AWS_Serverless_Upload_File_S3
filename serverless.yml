@@ -1,22 +1,11 @@
-service: aws-serverles-crud
+service: aws-serverles-upload-file-s3
 
 frameworkVersion: ">=1.0.0 <2.0.0"
 
 plugins:
-  - serverless-dynamodb-local # for developers
   - serverless-latest-layer-version # for developers
   - serverless-pseudo-parameters # for developers
   - serverless-offline # for developers
-
-custom:
-  dynamodb:
-    stages:
-      - dev
-    start:
-      port: 8000
-      migrate: true
-      inMemory: true
-      onStart: true
 
 package:
   exclude:
@@ -24,12 +13,6 @@ package:
     - "**/*.test.*"  # all test files
     - ".dynamodb/**"
     - ".serverless/**"
-  include:
-    - src/module/actor/createActor.js
-    - src/module/actor/deleteActor.js
-    - src/module/actor/getActor.js
-    - src/module/actor/getMultiActor.js
-    - src/module/actor/updateActor.js
 
 provider:
   name: aws
@@ -40,90 +23,25 @@ provider:
     name: deploy.${self:provider.region}.nipahut.club # S3 bucket name
   environment:
     DEPLOYMENT_STAGE: ${self:provider.stage} # staging environment dev, test or prod
-    WORKFLOW_ACTOR_TABLE: workflow_actor-${self:provider.stage} # actors table service
-    NODE_PATH: './:/opt/node_modules'
+    UPLOAD_BUCKET: upload.${self:provider.region}.nipahut.club # S3 bucket name for uploads NOTE: need to set up CORS
+    NODE_PATH: './:/opt/node_modules' # node modules layer path
 
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - dynamodb:Query
-        - dynamodb:Scan
-        - dynamodb:GetItem
-        - dynamodb:PutItem
-        - dynamodb:UpdateItem
+        - s3:* # random action, NOTE: not advisable for production
       Resource:
-        - arn:aws:dynamodb:${self:provider.region}:#{AWS::AccountId}:table/${self:provider.environment.WORKFLOW_ACTOR_TABLE}
-
-resources:
-  Resources:
-    WorkflowActor: # workflow actors table
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: ${self:provider.environment.WORKFLOW_ACTOR_TABLE}
-        AttributeDefinitions:
-          - AttributeName: id
-            AttributeType: S
-        KeySchema:
-          - AttributeName: id
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
+        - arn:aws:s3:::upload.${self:provider.region}.nipahut.club/*
 
 functions:
-# CRUD for Workflow Actor 
-# Create, Read, Update and Delete function
-  createActor:
-    description: create actor
-    handler: src/module/actor/createActor.handler
+# Updload PDF file only
+  uploadFiles:
+    description: upload files in S3 bucket with PDF only
+    handler: handler.uploadImage
     layers:
       - arn:aws:lambda:${self:provider.region}:#{AWS::AccountId}:layer:aws-serverles-layers-module-${self:provider.stage}:latest
     events:
       - http:
-          path: /create
-          method: post
-          cors: true
-
-  getActor:
-    description: get actor
-    handler: src/module/actor/getActor.handler
-    layers:
-      - arn:aws:lambda:${self:provider.region}:#{AWS::AccountId}:layer:aws-serverles-layers-module-${self:provider.stage}:latest
-    events:
-      - http:
-          path: /get
-          method: post
-          cors: true
-
-  updateActor:
-    description: update actor
-    handler: src/module/actor/updateActor.handler
-    layers:
-      - arn:aws:lambda:${self:provider.region}:#{AWS::AccountId}:layer:aws-serverles-layers-module-${self:provider.stage}:latest
-    events:
-      - http:
-          path: /update
-          method: post
-          cors: true
-
-  deleteActor:
-    description: delete actor
-    handler: src/module/actor/deleteActor.handler
-    layers:
-      - arn:aws:lambda:${self:provider.region}:#{AWS::AccountId}:layer:aws-serverles-layers-module-${self:provider.stage}:latest
-    events:
-      - http:
-          path: /delete
-          method: post
-          cors: true
-
-  getMultiActor:
-    description: get one or multiple actors
-    handler: src/module/actor/getMultiActor.handler
-    layers:
-      - arn:aws:lambda:${self:provider.region}:#{AWS::AccountId}:layer:aws-serverles-layers-module-${self:provider.stage}:latest
-    events:
-      - http:
-          path: /getMultiple
-          method: post
+          path: /upload
+          method: get
           cors: true
