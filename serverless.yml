@@ -29,7 +29,7 @@ provider:
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - s3:*
+        - s3:* # random action, NOTE: not advisable for production
       Resource:
         - arn:aws:s3:::upload.${self:provider.region}.nipahut.club/*
 
