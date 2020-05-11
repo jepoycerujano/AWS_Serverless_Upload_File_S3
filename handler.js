@@ -1,16 +1,10 @@
-const middyMiddleware = require('../../../lib/MiddleWare');
-const Logger = require('../../../lib/Logger');
+// const middyMiddleware = require('./lib/MiddleWare');
+const Logger = require('./lib/Logger');
+const getUploadURL = require('./lib/S3');
 
-const { WORKFLOW_ACTOR_TABLE } = process.env;
-const actorsTable = new Dynamo(WORKFLOW_ACTOR_TABLE);
-
-exports.handler = middyMiddleware((data, context, callback) => {
-  actorsTable.insertItem(data, (error, result) => {
-    if (error) {
-      Logger.error(JSON.stringify(error));
-      callback(null, { statusCode: 500, result: error });
-      return;
-    }
-    callback(null, result);
-  });
-});
+exports.uploadImage = async () => {
+  Logger.verbose('using lambda');
+  const result = await getUploadURL();
+  Logger.info(result);
+  return result;
+};

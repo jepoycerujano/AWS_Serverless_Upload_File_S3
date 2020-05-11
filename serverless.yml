@@ -1,4 +1,4 @@
-service: aws-serverles-crud
+service: aws-serverles-upload-file-s3
 
 frameworkVersion: ">=1.0.0 <2.0.0"
 
@@ -13,12 +13,6 @@ package:
     - "**/*.test.*"  # all test files
     - ".dynamodb/**"
     - ".serverless/**"
-  include:
-    - src/module/actor/createActor.js
-    - src/module/actor/deleteActor.js
-    - src/module/actor/getActor.js
-    - src/module/actor/getMultiActor.js
-    - src/module/actor/updateActor.js
 
 provider:
   name: aws
@@ -29,18 +23,25 @@ provider:
     name: deploy.${self:provider.region}.nipahut.club # S3 bucket name
   environment:
     DEPLOYMENT_STAGE: ${self:provider.stage} # staging environment dev, test or prod
-    WORKFLOW_ACTOR_TABLE: workflow_actor-${self:provider.stage} # actors table service
+    UPLOAD_BUCKET: upload.${self:provider.region}.nipahut.club # S3 bucket name for uploads NOTE: need to set up CORS
     NODE_PATH: './:/opt/node_modules' # node modules layer path
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:*
+      Resource:
+        - arn:aws:s3:::upload.${self:provider.region}.nipahut.club/*
 
 functions:
 # Updload PDF file only
-  createActor:
-    description: create actor
-    handler: src/module/actor/createActor.handler
+  uploadFiles:
+    description: upload files in S3 bucket with PDF only
+    handler: handler.uploadImage
     layers:
       - arn:aws:lambda:${self:provider.region}:#{AWS::AccountId}:layer:aws-serverles-layers-module-${self:provider.stage}:latest
     events:
       - http:
           path: /upload
-          method: post
+          method: get
           cors: true
